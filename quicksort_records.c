@@ -120,7 +120,7 @@ void quicksort(struct student a[], int lb, int ub)
 	}
 }
 
-void resetCount()
+void resetCount(void)
 {
 	comparisons = 0;
 	swaps = 0;
@@ -155,7 +155,7 @@ void addRecord(void)
 	printf("Record added.\n");
 }
 
-void showRecords()
+void showRecords(void)
 {
 	int i;
 
@@ -171,7 +171,7 @@ void showRecords()
 		printf("%d\t%-12s\t%d\n", rec[i].id, rec[i].name, rec[i].marks);
 }
 
-void chooseField()
+void chooseField(void)
 {
 	printf("\nSort by:\n1. ID\n2. Name\n3. Marks\nEnter choice: ");
 	scanf("%d", &field);
@@ -184,7 +184,7 @@ void chooseField()
 		order = 1;
 }
 
-void choosePivot()
+void choosePivot(void)
 {
 	printf("\nPivot:\n1. First\n2. Last\n3. Middle\nEnter choice: ");
 	scanf("%d", &pivotType);
@@ -192,15 +192,17 @@ void choosePivot()
 		pivotType = 1;
 }
 
-void printCount()
+void printCount(void)
 {
-	printf("\nComparisons     : %ld\n", comparisons);
+	printf("\n--- Analysis Report ---\n");
+	printf("Comparisons     : %ld\n", comparisons);
 	printf("Swaps           : %ld\n", swaps);
 	printf("Partitions      : %ld\n", partitions);
 	printf("Recursive calls : %ld\n", calls);
+	printf("-----------------------\n");
 }
 
-void sortRecords()
+void sortRecords(void)
 {
 	if (n == 0)
 	{
@@ -222,7 +224,7 @@ void sortRecords()
 	printCount();
 }
 
-int main()
+int main(void)
 {
 	int ch;
 
