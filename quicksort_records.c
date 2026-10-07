@@ -12,7 +12,7 @@ struct student
 };
 
 struct student rec[MAX];
-struct student original[MAX];
+struct student backup[MAX];
 int n = 0;
 
 int field = 1;
@@ -135,7 +135,7 @@ void copy(struct student to[], struct student from[], int size)
 		to[i] = from[i];
 }
 
-void addRecord()
+void addRecord(void)
 {
 	if (n == MAX)
 	{
@@ -150,7 +150,7 @@ void addRecord()
 	printf("Enter Marks: ");
 	scanf("%d", &rec[n].marks);
 
-	original[n] = rec[n];
+	backup[n] = rec[n];
 	n++;
 	printf("Record added.\n");
 }
@@ -211,7 +211,7 @@ void sortRecords()
 	chooseField();
 	choosePivot();
 
-	copy(rec, original, n);
+	copy(rec, backup, n);
 	resetCount();
 
 	printf("\nPartition details:\n");
