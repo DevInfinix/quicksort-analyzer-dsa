@@ -28,12 +28,7 @@ int compare(struct student x, struct student y)
 
 	if (field == 1)
 	{
-		if (x.id < y.id)
-			r = -1;
-		else if (x.id > y.id)
-			r = 1;
-		else
-			r = 0;
+		r = (x.id > y.id) - (x.id < y.id);
 	}
 	else if (field == 2)
 	{
@@ -41,12 +36,7 @@ int compare(struct student x, struct student y)
 	}
 	else
 	{
-		if (x.marks < y.marks)
-			r = -1;
-		else if (x.marks > y.marks)
-			r = 1;
-		else
-			r = 0;
+		r = (x.marks > y.marks) - (x.marks < y.marks);
 	}
 
 	if (order == 2)
