@@ -45,29 +45,10 @@ int compare(struct student x, struct student y)
 	return r;
 }
 
-void swap(struct student *x, struct student *y)
-{
-	struct student temp;
-	temp = *x;
-	*x = *y;
-	*y = temp;
-	swaps++;
-}
-
-void printKey(struct student s)
-{
-	if (field == 1)
-		printf("%d", s.id);
-	else if (field == 2)
-		printf("%s", s.name);
-	else
-		printf("%d", s.marks);
-}
-
 int partition(struct student a[], int lb, int ub)
 {
 	int dn, up, p;
-	struct student val;
+	struct student val, temp;
 
 	partitions++;
 
@@ -79,7 +60,12 @@ int partition(struct student a[], int lb, int ub)
 		p = (lb + ub) / 2;
 
 	if (p != lb)
-		swap(&a[p], &a[lb]);
+	{
+		temp = a[p];
+		a[p] = a[lb];
+		a[lb] = temp;
+		swaps++;
+	}
 
 	val = a[lb];
 	dn = lb + 1;
@@ -92,14 +78,29 @@ int partition(struct student a[], int lb, int ub)
 		while (compare(a[up], val) > 0)
 			up--;
 		if (dn < up)
-			swap(&a[dn], &a[up]);
+		{
+			temp = a[dn];
+			a[dn] = a[up];
+			a[up] = temp;
+			swaps++;
+		}
 	}
 
 	if (up != lb)
-		swap(&a[lb], &a[up]);
+	{
+		temp = a[lb];
+		a[lb] = a[up];
+		a[up] = temp;
+		swaps++;
+	}
 
 	printf("Pivot: ");
-	printKey(val);
+	if (field == 1)
+		printf("%d", val.id);
+	else if (field == 2)
+		printf("%s", val.name);
+	else
+		printf("%d", val.marks);
 	printf("\tLeft: %d\tRight: %d\n", up - lb, ub - up);
 
 	return up;
