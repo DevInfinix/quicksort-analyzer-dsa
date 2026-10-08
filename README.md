@@ -1,120 +1,213 @@
-# Quicksort Records Analyzer
-
 <div align="center">
 
-![C](https://img.shields.io/badge/language-C%20-programming-A8B400?logo=c&style=flat)
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat)
-![Status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)
+# ⚡ Quicksort Analyzer (DSA)
+
+### *Interactive Student Record Sorter & Algorithmic Complexity Analyzer in C*
+
+[![C Standard](https://img.shields.io/badge/Language-C99%20%2F%20C11-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c)
+[![Course](https://img.shields.io/badge/Course-Analysis%20of%20Algorithms%20(AOA)-F34F29?style=for-the-badge&logo=git&logoColor=white)](https://github.com/DevInfinix/quicksort-analyzer-dsa)
+[![Stars](https://img.shields.io/github/stars/DevInfinix/quicksort-analyzer-dsa?style=for-the-badge&logo=github&color=gold)](https://github.com/DevInfinix/quicksort-analyzer-dsa/stargazers)
+[![Forks](https://img.shields.io/github/forks/DevInfinix/quicksort-analyzer-dsa?style=for-the-badge&logo=git&color=blue)](https://github.com/DevInfinix/quicksort-analyzer-dsa/network/members)
+[![Issues](https://img.shields.io/github/issues/DevInfinix/quicksort-analyzer-dsa?style=for-the-badge&color=brightgreen)](https://github.com/DevInfinix/quicksort-analyzer-dsa/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
+<br/>
+
+<p align="center">
+  <b>A lightweight, transparent C application designed to demonstrate the internal mechanics of the Quicksort algorithm on composite data structures, tracking real-world comparisons, swaps, partition steps, and recursive call depth.</b>
+</p>
+
+[Key Features](#-key-features) •
+[Algorithm Overview](#-algorithm-flow--partitioning) •
+[Interactive Demo](#-interactive-demo) •
+[Compilation & Run](#-quick-start) •
+[Performance Analysis](#-performance-analysis--metrics) •
+[Contributors](#-contributors)
 
 </div>
 
 ---
 
-## Overview
+## 📌 Project Overview
 
-A simple C program that stores student records (ID, name, marks) and sorts
-them using the **Quicksort** algorithm. The program demonstrates how different
-**pivot strategies** (first, last, middle) affect sorting performance by
-tracking comparisons, swaps, partitions, and recursive calls.
+In collegiate **Data Structures and Analysis of Algorithms (AOA / DSA)** curricula, Quicksort is often taught conceptually on flat integer arrays. 
 
-This project is part of the **Analysis of Algorithms** course assignment.
-
----
-
-## Features
-
-- **Add Records** — Store student data (ID, name, marks) up to 100 entries
-- **Display Records** — View all stored student records in tabular format
-- **Sort Records** — Quick sort by ID, name, or marks (ascending or descending)
-- **Pivot Selection** — Choose first, last, or middle element as pivot
-- **Analysis Metrics** — Track comparisons, swaps, partitions, and recursive calls
-- **Step-by-step Output** — See pivot and partition sizes at every quicksort step
+This project bridges theoretical divide-and-conquer mechanics and practical software engineering by:
+1. **Operating on Structured Records:** Managing student profiles (`ID`, `Name`, `Marks`) with full multi-attribute sorting support.
+2. **Dynamic Pivot Selection:** Allowing users to switch pivot selection strategies (`First`, `Last`, `Middle/Subarray Center`) to analyze how pivot choices directly influence recursive partitioning balance.
+3. **Transparent Execution Tracking:** Recording exact operation counts (`comparisons`, `swaps`, `partitions`, `recursive call stack counts`) at runtime without external profilers or heavy dependencies.
+4. **Idempotent Sorting via Backup Arrays:** Preserving raw input arrays so users can repeatedly re-sort the identical dataset across different keys and pivot configurations.
 
 ---
 
-## How Quicksort Works
+## ✨ Key Features
 
+- 🗂️ **Record Management:** Add and review up to 100 structured student records (`id`, `name[30]`, `marks`).
+- 🔄 **Multi-Field Sorting:** Sort seamlessly by **Student ID**, **Student Name** (lexicographical `strcmp`), or **Marks**.
+- ↕️ **Bi-Directional Order:** Choose between **Ascending** and **Descending** order with zero algorithmic overhead.
+- 🎯 **Pivot Strategy Selector:**
+  - `First Element` ($P = \text{lb}$)
+  - `Last Element` ($P = \text{ub}$)
+  - `Middle Element` ($P = \lfloor(\text{lb} + \text{ub})/2\rfloor$)
+- 🔍 **Real-Time Step Trace:** Live display of chosen pivot values alongside left and right partition subarray sizes at each stage.
+- 📊 **Analytical Instrumentation:** Quantitative tally of comparisons, swaps, partitions, and function calls generated per sort run.
+
+---
+
+## 🔬 Algorithm Flow & Partitioning
+
+Quicksort utilizes a divide-and-conquer paradigm. The core partitioning process rearranges elements around the selected pivot:
+
+```mermaid
+flowchart TD
+    A[Unsorted Subarray: lb to ub] --> B{Choose Pivot Strategy}
+    B -->|Strategy 1| C1[Pivot = a lb]
+    B -->|Strategy 2| C2[Pivot = a ub]
+    B -->|Strategy 3| C3[Pivot = a mid]
+    C1 --> D[Swap chosen pivot with a lb]
+    C2 --> D
+    C3 --> D
+    D --> E[Scan Pointers: dn from lb+1, up from ub]
+    E --> F{dn < up ?}
+    F -->|Yes: Out of place| G[Swap a dn with a up]
+    G --> E
+    F -->|No: Crossed| H[Place pivot at final position: Swap a lb with a up]
+    H --> I[Recurse Left Subarray: lb to up-1]
+    H --> J[Recurse Right Subarray: up+1 to ub]
 ```
-Input: [3, 6, 8, 10, 1, 2, 5]
 
-1. Choose pivot (e.g., first element = 3)
-2. Partition: smaller | pivot | larger
-   → [1, 2] | [3] | [6, 8, 10, 5]
-3. Recurse on left:  [1, 2]       → sorted
-4. Recurse on right: [6, 8, 10, 5] → [5, 6, 8, 10]
+### Complexity Reference
 
-Final: [1, 2, 3, 5, 6, 8, 10]
-```
+| Scenario | Time Complexity | Space Complexity (Stack) | Condition |
+| :--- | :---: | :---: | :--- |
+| **Best Case** | $\mathcal{O}(n \log n)$ | $\mathcal{O}(\log n)$ | Pivot partitions array into equal halves |
+| **Average Case** | $\mathcal{O}(n \log n)$ | $\mathcal{O}(\log n)$ | Random element distribution |
+| **Worst Case** | $\mathcal{O}(n^2)$ | $\mathcal{O}(n)$ | Extremely unbalanced partitions (e.g. sorted input with First/Last pivot) |
 
 ---
 
-## Getting Started
+## 📸 Interactive Demo
+
+Here is a visual walk-through of the interactive CLI tool in action:
+
+| 1. Main Menu & Record Creation | 2. Database Formatted Table View |
+| :---: | :---: |
+| <img src="assets/screenshots/01_main_menu.png" alt="Main Menu" width="100%"/> | <img src="assets/screenshots/02_display_records.png" alt="Display Records" width="100%"/> |
+| *Intuitive numeric menu with input prompts for ID, Name, and Marks.* | *Clean ASCII tabular layout showing current student records.* |
+| **3. Sort Parameters & Partition Trace** | **4. Final Output & Analysis Report** |
+| <img src="assets/screenshots/03_sorting_partition.png" alt="Partition Details" width="100%"/> | <img src="assets/screenshots/04_analysis_report.png" alt="Analysis Report" width="100%"/> |
+| *Real-time partition logging showing pivot value and left/right sizes.* | *Sorted output paired with comprehensive algorithmic complexity metrics.* |
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- A C compiler (GCC recommended)
+A standard C compiler (e.g. `gcc`, `clang`, or MSVC MinGW) supporting C99 or later.
 
 ### Compilation
+Clone the repository and compile with standard warnings enabled:
 
 ```bash
-gcc quicksort_records.c -o quicksort_records
+git clone https://github.com/DevInfinix/quicksort-analyzer-dsa.git
+cd quicksort-analyzer-dsa
+gcc -Wall -Wextra quicksort_records.c -o quicksort_records
 ```
 
-### Running
+### Execution
+Run the executable directly in your terminal:
 
+**Linux / macOS:**
 ```bash
 ./quicksort_records
 ```
 
----
-
-## Usage
-
-```
-===== QUICK SORT RECORD ORGANIZER =====
-1. Add Record
-2. Display Records
-3. Sort Records
-4. Exit
-Enter choice:
+**Windows (PowerShell / Command Prompt):**
+```powershell
+.\quicksort_records.exe
 ```
 
-1. **Add Record** — Enter student ID, name, and marks
-2. **Display Records** — Shows all records in a table
-3. **Sort Records** — Choose sort field, order, and pivot, then see the step-by-step sorting process and analysis report
+---
+
+## 📈 Performance Analysis & Metrics
+
+Each sorting run outputs an empirical analysis report:
+
+```
+--- Analysis Report ---
+Comparisons     : 14
+Swaps           : 4
+Partitions      : 3
+Recursive calls : 7
+-----------------------
+```
+
+- **Comparisons:** Incremented every time two records are compared via the centralized comparator `compare()`.
+- **Swaps:** Counts physical record struct exchanges in memory during partitioning.
+- **Partitions:** Reflects the number of completed sub-array divisions.
+- **Recursive Calls:** Directly measures the total call stack activations generated by `quicksort()`.
 
 ---
 
-## Analysis Report
+## 📁 Repository Structure
 
-After sorting, the program displays:
-
-| Metric | Description |
-|---|---|
-| Comparisons | Number of times two records were compared |
-| Swaps | Number of times two records were swapped |
-| Partitions | Number of partition operations performed |
-| Recursive calls | Number of times quicksort called itself |
-
----
-
-## Project Structure
-
-| File | Description |
-|---|---|
-| `quicksort_records.c` | Main source code |
-| `FUTURE_SCOPE.md` | Planned improvements |
-| `.gitignore` | Ignores compiled binaries |
+```
+quicksort-analyzer-dsa/
+├── assets/
+│   └── screenshots/
+│       ├── 01_main_menu.png
+│       ├── 02_display_records.png
+│       ├── 03_sorting_partition.png
+│       └── 04_analysis_report.png
+├── .gitignore
+├── README.md
+└── quicksort_records.c
+```
 
 ---
 
-## Built With
+## 👥 Contributors
 
-- **C** — Programming language
-- **GCC** — Compiler
+This project was built and analyzed as part of the **Analysis of Algorithms** academic coursework.
+
+<div align="center">
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <a href="https://github.com/DevInfinix">
+        <img src="https://github.com/DevInfinix.png" width="90px;" alt="DevInfinix"/><br />
+        <sub><b>DevInfinix</b></sub>
+      </a><br />
+      <sub>Lead Developer</sub>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://github.com/cmrittikaoli-ux">
+        <img src="https://github.com/cmrittikaoli-ux.png" width="90px;" alt="cmrittikaoli-ux"/><br />
+        <sub><b>cmrittikaoli-ux</b></sub>
+      </a><br />
+      <sub>Contributor</sub>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://github.com/kilmngrrr">
+        <img src="https://github.com/kilmngrrr.png" width="90px;" alt="kilmngrrr"/><br />
+        <sub><b>kilmngrrr</b></sub>
+      </a><br />
+      <sub>Contributor</sub>
+    </td>
+    <td align="center" width="25%">
+      <a href="https://github.com/ayurdapatil">
+        <img src="https://github.com/ayurdapatil.png" width="90px;" alt="ayurdapatil"/><br />
+        <sub><b>ayurdapatil</b></sub>
+      </a><br />
+      <sub>Contributor</sub>
+    </td>
+  </tr>
+</table>
+</div>
 
 ---
 
-## Author
+## 📜 License
 
-VIT student, Analysis of Algorithms course
+This project is open-source and distributed under the [MIT License](LICENSE).
+Feel free to use and reference it for educational and academic coursework purposes.
