@@ -186,7 +186,7 @@ The README must look like a real project, not AI-generated. Follow this exact st
    ```
 
 8. **Contributors** — HTML table with GitHub avatars + names (see template below).
-9. **License** — "MIT — use for any academic work."
+9. **License** — "MIT — use it for any academic work."
 
 ### Contributors Table Template
 
@@ -198,7 +198,7 @@ The README must look like a real project, not AI-generated. Follow this exact st
       <a href="https://github.com/<username>">
         <img src="https://github.com/<username>.png" width="90px;" alt="<username>"/><br />
         <sub><b><username></b></sub>
-      </a><br />
+      </a><br/>
       <sub><role></sub>
     </td>
     <!-- Repeat <td> for each contributor -->
